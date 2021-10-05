@@ -38,8 +38,9 @@ export default function App() {
     }
 
     let elementHeight = lerp(initialHeight, collapsedHeight, res);
-    elementHeight = Math.round(elementHeight);
-    compensation = Math.round(compensation);
+    compensation = initialHeight - elementHeight;
+    // elementHeight = Math.round(elementHeight);
+    // compensation = Math.round(compensation);
 
     requestAnimationFrame(() => {
       setScrollProgress(res);
@@ -71,11 +72,11 @@ export default function App() {
   return (
     <div className="p-2 prose max-w-full relative">
       <h1>Website body</h1>
-      <p>Hello there</p>
-      <pre>scrollProgress: {scrollProgress}</pre>
-      <pre>elementHeight: {elementHeight}</pre>
-      <pre>compensation: {compensation}</pre>
-
+      <div className="text-xs">
+        <pre>scrollProgress: {scrollProgress}</pre>
+        <pre>elementHeight: {elementHeight}</pre>
+        <pre>compensation: {compensation}</pre>
+      </div>
       <div
         style={{
           height: '800px',
@@ -96,6 +97,7 @@ export default function App() {
 
           <div
             ref={headerRef}
+            className={`${scrollProgress >= 1 ? 'shadow-md' : ''}`}
             style={{
               height: elementHeight + 'px',
               overflow: 'hidden',
@@ -106,7 +108,7 @@ export default function App() {
             }}
           >
             <div>
-              <div className="bg-yellow-100 rounded-md p-2 h-full mt-1">
+              <div className={`bg-yellow-100 rounded-md p-2 h-full mt-1`}>
                 <h1
                   style={{
                     'font-size': lerp(2, 1.5, scrollProgress) + 'em',
@@ -125,7 +127,14 @@ export default function App() {
                   {[1, 2, 3].map((value, index) => {
                     return (
                       <div class="bg-green-200 rounded p-1 flex-1">
-                        <span className="mt-0">{value * 100} pro Jahr</span>
+                        <span
+                          className="mt-0 font-bold"
+                          style={{
+                            'font-size': lerp(1.5, 1, scrollProgress) + 'em',
+                          }}
+                        >
+                          {value * 100} pro Jahr
+                        </span>
                         <p
                           style={{
                             'font-size': lerp(1, 0, scrollProgress) + 'em',
